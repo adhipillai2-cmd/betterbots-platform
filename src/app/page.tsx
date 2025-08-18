@@ -1,105 +1,70 @@
-import Image from "next/image";
+// src/app/page.tsx
+'use client'; 
+
 import ChatWidget from "@/components/ChatWidget";
+import { useState } from 'react'; 
+import { ArrowDownRight } from 'lucide-react'; // We'll use this for the arrow
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [isOpen, setIsOpen] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    // Add 'relative' to allow positioning the arrow inside this container
+    <div className="bg-white text-slate-800 min-h-screen relative">
+      {/* Header */}
+      <header className="absolute inset-x-0 top-0 z-50">
+        <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+          <div className="flex lg:flex-1">
+            <a href="#" className="-m-1.5 p-1.5">
+              <span className="text-2xl font-bold text-indigo-600">BetterBots</span>
+            </a>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        {/* Hero Section */}
+        <div className="relative isolate px-6 pt-14 lg:px-8">
+          <div className="mx-auto max-w-4xl py-32 sm:py-48 lg:py-56">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                Don't just get visitors.
+                <br />
+                Get customers.
+              </h1>
+              <p className="mt-6 text-lg leading-8 text-gray-600">
+                BetterBots engages every website visitor with a smart AI assistant,
+                answering questions and capturing leads 24/7.
+              </p>
+              {/* The "Try the Live Demo" button has been removed from here */}
+            </div>
+          </div>
         </div>
-        <ChatWidget />
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {/* Social Proof Section */}
+      <div className="bg-white py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <h2 className="text-center text-lg font-semibold leading-8 text-gray-900">
+            The trusted AI assistant for leading local businesses
+          </h2>
+          <div className="mx-auto mt-10 grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
+            <p className="col-span-2 max-h-12 w-full object-contain lg:col-span-1 text-center text-gray-400 font-bold text-xl">Client Logo</p>
+            <p className="col-span-2 max-h-12 w-full object-contain lg:col-span-1 text-center text-gray-400 font-bold text-xl">Local Biz</p>
+            <p className="col-span-2 max-h-12 w-full object-contain lg:col-span-1 text-center text-gray-400 font-bold text-xl">Startup Inc.</p>
+            <p className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1 text-center text-gray-400 font-bold text-xl">Your Biz Here</p>
+            <p className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1 text-center text-gray-400 font-bold text-xl">Service Co.</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* NEW: Arrow pointing to the widget */}
+      <div className="absolute bottom-24 right-28 flex items-center space-x-2 animate-pulse">
+        <p className="text-lg font-semibold text-indigo-600">Try the live demo!</p>
+        <ArrowDownRight className="w-8 h-8 text-indigo-600" />
+      </div>
+
+      <ChatWidget isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 }
