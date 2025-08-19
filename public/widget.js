@@ -146,7 +146,7 @@
   widgetContainer.innerHTML = `
     <button id="bb-chat-button">💬</button>
     <div id="bb-chat-window">
-        <div id="bb-chat-header">Echo AI</div>
+        <div id="bb-chat-header">AI Assistant</div>
         <div id="bb-chat-log"></div>
         <div id="bb-chat-input-container">
             <input type="text" id="bb-chat-input" placeholder="Type a message...">
@@ -212,5 +212,5 @@
   });
   
   // Add initial bot message
-  addMessage('bot', 'Hi! I am Echo AI. How can I assist you today?');
+  addMessage('bot', 'Hi! I am your AI Assistant. How can I assist you today?');
 })();
