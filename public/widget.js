@@ -1,7 +1,7 @@
 // public/widget.js
 (function() {
   // IMPORTANT: REPLACE THIS WITH YOUR ACTUAL DEPLOYED VERCEL URL
-  const serverUrl = 'https://betterbots-platform.vercel.app/'; 
+  const serverUrl = 'https://betterbots-platform.vercel.app'; 
 
   // --- State Management ---
   let messages = []; // New: Array to store the conversation history
