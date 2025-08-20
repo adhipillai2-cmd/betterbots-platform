@@ -5,7 +5,6 @@ import ChatWidget from "@/components/ChatWidget";
 import { useState } from 'react'; 
 import { ArrowDownRight } from 'lucide-react';
 
-// Define the structure for the lead data here as well
 type LeadData = {
   service?: string | null;
   urgency?: 'emergency' | 'quote' | null;
@@ -18,7 +17,6 @@ type LeadData = {
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
-  // New: State to hold the structured lead data from the widget
   const [leadData, setLeadData] = useState<LeadData | null>(null);
 
   return (
@@ -37,13 +35,10 @@ export default function Home() {
         {/* Left Side: Hero Text */}
         <div className="text-center lg:text-left">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            Don&apos;t just get visitors.
-            <br />
-            Get qualified leads.
+            The AI Receptionist for Home Service Pros.
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            This is a live demonstration of our AI Dispatcher for home services.
-            Start a conversation with the bot and watch as it extracts the information into a structured lead sheet in real-time.
+            Built for HVAC, Roofing, Solar, & Plumbing contractors. Our AI Dispatcher qualifies leads and captures job details 24/7, so you never miss a call.
           </p>
         </div>
 
@@ -60,8 +55,8 @@ export default function Home() {
       <ChatWidget 
         isOpen={isOpen} 
         setIsOpen={setIsOpen} 
-        onLeadDataUpdate={setLeadData} // Pass the setter function to the widget
-        clientId="betterbots-demo" // Tell the widget which bot to use
+        onLeadDataUpdate={setLeadData}
+        clientId="home-services-pro-template" // We are now demoing the home services bot
       />
     </div>
   );

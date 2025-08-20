@@ -26,8 +26,8 @@ interface ChatWidgetProps {
 
 export default function ChatWidget({ isOpen, setIsOpen, onLeadDataUpdate, clientId }: ChatWidgetProps) {
   const [messages, setMessages] = useState<Message[]>([
-    { sender: 'bot', text: "Welcome! How may I help you today?" }
-  ]);
+    { sender: 'bot', text: "Thanks for visiting! What home service can we help you with today?" }
+]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const chatLogRef = useRef<HTMLDivElement>(null);

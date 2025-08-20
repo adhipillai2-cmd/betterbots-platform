@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Initialize Supabase and Gemini Clients
+// Initialize Supabase and Gemini Clients (no changes here)
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -16,17 +16,6 @@ const model = genAI.getGenerativeModel({
   systemInstruction: "You are an expert AI dispatcher for a professional home services company.", 
 });
 
-// Define the structure for the lead data we want to extract
-interface LeadData {
-  service: string | null;
-  urgency: 'emergency' | 'quote' | null;
-  address: string | null;
-  fullName: string | null;
-  phone: string | null;
-  email: string | null;
-  isComplete: boolean;
-}
-
 export async function POST(req: Request) {
   try {
     const { clientId, message, history = [] } = await req.json();
@@ -35,9 +24,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'clientId and message are required.' }, { status: 400 });
     }
 
+    // --- NEW: Fetch the new specialized columns from Supabase ---
     const { data: clientConfig, error } = await supabase
       .from('clients')
-      .select('training_prompt')
+      .select('training_prompt, services_offered, service_area_zip_codes, business_hours, booking_link')
       .eq('client_id', clientId)
       .single();
 
@@ -45,16 +35,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Client configuration not found.` }, { status: 404 });
     }
 
+    // --- NEW: Construct a prompt that includes the specialized data ---
     const fullPrompt = `
+      You have the following specific information about the business you work for:
+      - Services Offered: ${JSON.stringify(clientConfig.services_offered) || 'Not specified.'}
+      - Service Area ZIP Codes: ${clientConfig.service_area_zip_codes?.join(', ') || 'Not specified.'}
+      - Business Hours: ${JSON.stringify(clientConfig.business_hours) || 'Not specified.'}
+      
+      Begin by following the main training prompt below. Use the specific information above to answer user questions accurately if they ask.
+      ---
       ${clientConfig.training_prompt}
-
       ---
       Here is the current conversation history:
       ${JSON.stringify(history)}
 
       Here is the latest user message: "${message}"
       ---
-
       Based on the workflow, provide a conversational reply to the user.
       After the reply, extract the information gathered SO FAR into a VALID JSON object.
       The JSON object must follow this exact structure:
@@ -69,8 +65,6 @@ export async function POST(req: Request) {
       }
       
       Your entire response must be a single string containing the reply, followed by "|||", followed by the JSON object.
-      EXAMPLE RESPONSE FORMAT:
-      Thank you, I have your address. Is this an emergency or are you looking for a quote?|||{"service":"HVAC","urgency":null,"address":"123 Main St, Anytown, USA","fullName":null,"phone":null,"email":null,"isComplete":false}
     `;
 
     const result = await model.generateContent(fullPrompt);
@@ -80,7 +74,6 @@ export async function POST(req: Request) {
     const reply = parts[0].trim();
     let jsonString = parts[1] ? parts[1].trim() : '{}';
 
-    // THIS IS THE FIX: Clean the JSON string if it's wrapped in Markdown fences
     if (jsonString.startsWith('```json')) {
       jsonString = jsonString.substring(7, jsonString.length - 3).trim();
     }
