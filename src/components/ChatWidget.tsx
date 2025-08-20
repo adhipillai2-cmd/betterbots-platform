@@ -4,25 +4,34 @@
 import { useState, Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { SendHorizonal, X } from 'lucide-react';
 
-type Message = {
-  sender: 'user' | 'bot';
-  text: string;
+// Define the structure for a message and the lead data
+type Message = { sender: 'user' | 'bot'; text: string };
+type LeadData = {
+  service?: string | null;
+  urgency?: 'emergency' | 'quote' | null;
+  address?: string | null;
+  fullName?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  isComplete?: boolean;
 };
 
+// Define the props, including a new callback function
 interface ChatWidgetProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  onLeadDataUpdate: (data: LeadData) => void; // New: Callback to send data to the parent
+  clientId: string; // New: Pass clientId as a prop
 }
 
-export default function ChatWidget({ isOpen, setIsOpen }: ChatWidgetProps) {
+export default function ChatWidget({ isOpen, setIsOpen, onLeadDataUpdate, clientId }: ChatWidgetProps) {
   const [messages, setMessages] = useState<Message[]>([
-    { sender: 'bot', text: "Welcome! How can I help you today?" }
+    { sender: 'bot', text: "Welcome! How may I help you today?" }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const chatLogRef = useRef<HTMLDivElement>(null);
 
-  // Effect to scroll to the bottom of the chat log
   useEffect(() => {
     if (chatLogRef.current) {
       chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
@@ -33,7 +42,8 @@ export default function ChatWidget({ isOpen, setIsOpen }: ChatWidgetProps) {
     if (!input.trim()) return;
 
     const userMessage: Message = { sender: 'user', text: input };
-    setMessages(prev => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput('');
     setLoading(true);
 
@@ -42,26 +52,31 @@ export default function ChatWidget({ isOpen, setIsOpen }: ChatWidgetProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          clientId: 'betterbots-demo', // Using a test client ID
-          message: input
+          clientId: clientId, // Use the clientId from props
+          message: input,
+          history: messages, // New: Send the conversation history
         })
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
 
       const data = await response.json();
+      
       const botMessage: Message = { sender: 'bot', text: data.reply };
       setMessages(prev => [...prev, botMessage]);
+      onLeadDataUpdate(data.leadData); // New: Send the structured data to the parent page
 
     } catch (error) {
       console.error("Failed to send message:", error);
-      const errorMessage: Message = { sender: 'bot', text: "Sorry, I'm having trouble connecting. Please try again." };
+      const errorMessage: Message = { sender: 'bot', text: "Sorry, I'm having trouble connecting." };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setLoading(false);
     }
   };
-
+  
+  // Return statement for the widget UI (same as before)...
+  // ...
   return (
     <>
       {/* CHAT BUBBLE BUTTON */}
