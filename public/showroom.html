@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BetterBots | Live Demo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f0f8ff; /* Light Alice Blue background */
+            color: #0d3d56; /* Dark Blue-Gray text */
+            overflow: hidden; /* Prevents scrollbars */
+        }
+
+        .page-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5rem;
+        }
+
+        .right-panel {
+            flex: 1;
+            background: linear-gradient(45deg, #e0f2fe, #dbeafe); /* Subtle blue gradient */
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: #1e3a8a; /* Deep Indigo */
+        }
+
+        p {
+            font-size: 1.125rem;
+            color: #374151; /* Cool Gray */
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #f97316; /* Vibrant Orange */
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .cta-button:hover {
+            background-color: #ea580c; /* Darker Orange */
+            transform: translateY(-2px);
+        }
+
+        .pointer {
+            position: absolute;
+            bottom: 2rem;
+            right: 8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .pointer p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            margin: 0;
+        }
+
+        .pointer svg {
+            width: 2rem;
+            height: 2rem;
+            color: #1e3a8a;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        <div class="left-panel">
+            <h1>Stop Missing Leads After Hours.</h1>
+            <p>
+                Our AI Receptionist qualifies leads from your website 24/7, so you can focus on the job. Built for HVAC, Plumbing, & Roofing pros.
+            </p>
+            <a href="https://calendly.com/betterbots-service" class="cta-button" target="_blank">Book a Free Consultation</a>
+        </div>
+        <div class="right-panel">
+            </div>
+    </div>
+
+    <div class="pointer">
+        <p>Try the live demo!</p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 17 5-5-5-5"/><path d="m6 17 5-5-5-5"/></svg>
+    </div>
+
+    <script src="https://betterbots-platform.vercel.app/widget.js" data-client-id="home-services-pro-template" defer></script>
+
+</body>
+</html>
