@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Initialize Supabase and Gemini Clients (no changes here)
+// Initialize Supabase and Gemini Clients
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -24,10 +24,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'clientId and message are required.' }, { status: 400 });
     }
 
-    // --- NEW: Fetch the new specialized columns from Supabase ---
     const { data: clientConfig, error } = await supabase
       .from('clients')
-      .select('training_prompt, services_offered, service_area_zip_codes, business_hours, booking_link')
+      .select('training_prompt, services_offered, service_area_zip_codes, business_hours, booking_link, notification_email, notification_phone')
       .eq('client_id', clientId)
       .single();
 
@@ -35,7 +34,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `Client configuration not found.` }, { status: 404 });
     }
 
-    // --- NEW: Construct a prompt that includes the specialized data ---
     const fullPrompt = `
       You have the following specific information about the business you work for:
       - Services Offered: ${JSON.stringify(clientConfig.services_offered) || 'Not specified.'}
@@ -79,6 +77,16 @@ export async function POST(req: Request) {
     }
 
     const leadDataJson = JSON.parse(jsonString);
+
+    // --- FUTURE INTEGRATION: LEAD NOTIFICATIONS ---
+    // When a lead is marked as complete by the AI, the code to send
+    // email and SMS alerts will go here.
+    if (leadDataJson.isComplete) {
+      console.log(`LEAD CAPTURED FOR ${clientId}:`, leadDataJson);
+      // TODO: Add SendGrid/Resend email logic here using clientConfig.notification_email
+      // TODO: Add Twilio SMS logic here using clientConfig.notification_phone
+    }
+    // ------------------------------------------------
 
     return NextResponse.json({
       reply: reply,

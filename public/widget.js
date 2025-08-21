@@ -27,7 +27,7 @@
       right: 20px; 
       width: 60px; 
       height: 60px; 
-      background: linear-gradient(45deg, #1e3a8a, #f97316); /* NEW: Blue & Orange Gradient */
+      background: linear-gradient(45deg, #0e48e7ff, #f97316); /* NEW: Blue & Orange Gradient */
       border-radius: 50%; 
       border: none; 
       font-size: 24px; 
